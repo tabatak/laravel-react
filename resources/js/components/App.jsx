@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
-import GlobalNav from './GlobalNav';
-import Top from './Top';
-import About from './About';
-import Register from './Register';
-import Login from './Login';
+import MainRouter from './MainRouter';
 import axios from 'axios';
+import Layout from './admin/Layout';
 
 axios.defaults.baseURL = "http://localhost:9000/";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -22,21 +19,9 @@ axios.interceptors.request.use(function (config) {
 function App() {
     return (
         <BrowserRouter>
-            <GlobalNav />
-            <Switch>
-                <Route exact path="/">
-                    <Top />
-                </Route>
-                <Route path="/about">
-                    <About />
-                </Route>
-                <Route path="/register">
-                    <Register />
-                </Route>
-                <Route path="/login">
-                    <Login />
-                </Route>
-            </Switch>
+            <MainRouter />
+
+            <Route path="/admin" name="Admin" render={(props) => <Layout {...props} />} />
         </BrowserRouter>
     )
 }
