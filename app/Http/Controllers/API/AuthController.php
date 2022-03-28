@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 use Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -52,6 +54,18 @@ class AuthController extends Controller
                 'validation_errors' => $validator->messages(),
             ]);
         } else {
+            // $credentials = $request->validate([
+            //     'email' => ['required', 'email'],
+            //     'password' => 'required',
+            // ]);
+
+            // if ($this->getGuard()->attempt($credentials)) {
+            //     $request->session()->regenerate();
+
+            //     return new JsonResponse(['message' => 'ログインしました']);
+            // }
+
+
             $user = User::where('email', $request->email)->first();
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return response()->json([
@@ -59,21 +73,25 @@ class AuthController extends Controller
                     'message' => '入力情報が不正です',
                 ]);
             } else {
-                $token = $user->createToken($user->email . '_Token')->plainTextToken;
+                // $token = $user->createToken($user->email . '_Token')->plainTextToken;
+                $request->session()->regenerate();
+                Auth::login($user);
 
                 return response()->json([
                     'status' => 200,
                     'username' => $user->name,
-                    'token' => $token,
+                    'token' => 'token',
                     'message' => 'ログインに成功しました。'
                 ]);
             }
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        auth()->user()->tokens()->delete();
+        logger('test', ['name' => auth()->user()->name]);
+        $request->session()->invalidate();
+        // Auth::logout();
         return response()->json([
             'status' => 200,
             'message' => 'ログアウト成功',

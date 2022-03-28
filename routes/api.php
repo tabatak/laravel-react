@@ -26,7 +26,6 @@ Route::middleware('auth:users')->group(function () {
     Route::get('user/chackingAuthenticated', function () {
         return response()->json(['message' => 'You are in', 'status' => 200], 200);
     });
-
     Route::post('user/logout', [AuthController::class, 'logout']);
 });
 

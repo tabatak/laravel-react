@@ -4,7 +4,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 
 import MainRouter from './MainRouter';
 import axios from 'axios';
-import Layout from './admin/Layout';
 
 axios.defaults.baseURL = "http://localhost:9000/";
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -20,8 +19,6 @@ function App() {
     return (
         <BrowserRouter>
             <MainRouter />
-
-            <Route path="/admin" name="Admin" render={(props) => <Layout {...props} />} />
         </BrowserRouter>
     )
 }

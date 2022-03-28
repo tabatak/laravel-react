@@ -60,6 +60,7 @@ class AdminAuthController extends Controller
                 ]);
             } else {
                 $token = $admin->createToken($admin->email . '_Token')->plainTextToken;
+                $request->session()->regenerate();
 
                 return response()->json([
                     'status' => 200,
@@ -71,9 +72,11 @@ class AdminAuthController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        auth()->user()->tokens()->delete();
+        logger('admin logout', ['name' => auth()->user()->name]);
+        $request->session()->invalidate();
+
         return response()->json([
             'status' => 200,
             'message' => 'ログアウト成功',

@@ -62,6 +62,9 @@ function MainRouter() {
                     <Route path="/user">
                         <UserRouter />
                     </Route>
+                    <Route path="/admin">
+                        <AdminRouter />
+                    </Route>
                 </Switch>
             </div>
         </>

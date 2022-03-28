@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link, useHistory, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
@@ -23,19 +23,15 @@ function AdminRouter() {
         });
     }
 
+    var AuthButtons = '';
 
-    const [Authenticated, setAuthenticated] = useState(false);
-    useEffect(() => {
-        axios.get(`/api/admin/checkingAuthenticated`).then(res => {
-            if (res.status === 200) {
-                setAuthenticated(true);
-            }
-        });
-
-        return () => {
-            setAuthenticated(false);
-        }
-    }, []);
+    AuthButtons = (
+        <li>
+            <div onClick={logoutSubmit}>
+                <span>ログアウト</span>
+            </div>
+        </li>
+    );
 
     return (
         <>
@@ -46,14 +42,7 @@ function AdminRouter() {
                         <span>Top</span>
                     </Link>
                 </li>
-                {Authenticated ?
-                    (
-                        <li>
-                            <div onClick={logoutSubmit}>
-                                <span>ログアウト</span>
-                            </div>
-                        </li>
-                    ) : <></>}
+                {AuthButtons}
             </ul >
 
             <div>
