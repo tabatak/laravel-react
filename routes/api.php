@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AdminAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +23,15 @@ Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:users')->group(function () {
-
-    Route::get('user/chackingAuthenticated', function () {
-        return response()->json(['message' => 'You are in', 'status' => 200], 200);
-    });
     Route::post('user/logout', [AuthController::class, 'logout']);
+
+    Route::get('user/me', [AuthController::class, 'me']);
 });
+
+
+
+
+
 
 
 // admin
@@ -35,10 +39,8 @@ Route::post('admin/register', [AdminAuthController::class, 'register']);
 Route::post('admin/login', [AdminAuthController::class, 'login']);
 
 Route::middleware('auth:admins')->group(function () {
-
-    Route::get('admin/chackingAuthenticated', function () {
-        return response()->json(['message' => 'You are in', 'status' => 200], 200);
-    });
-
+    // Route::get('admin/me', request()->user()->name);
     Route::post('admin/logout', [AdminAuthController::class, 'logout']);
+
+    Route::get('admin/me', [AdminAuthController::class, 'me']);
 });
