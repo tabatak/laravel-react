@@ -50,6 +50,9 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
+
+        logger('user login', ['email' => $credentials['email']]);
+
         if (Auth::guard('users')->attempt($credentials)) {
             $request->session()->regenerate();
 
